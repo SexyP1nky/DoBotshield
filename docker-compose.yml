@@ -105,10 +105,10 @@ services:
     networks:
       - waf_lab
     ports:
-      - "9180:80"
+      - "9180:8080"
     environment:
       BACKEND:           http://dvwa:80
-      PORT:              "80"
+      PORT:              "8080"
       PARANOIA:          "1"
       ANOMALY_INBOUND:   "5"
       ANOMALY_OUTBOUND:  "4"
@@ -122,10 +122,10 @@ services:
     networks:
       - waf_lab
     ports:
-      - "9181:80"
+      - "9181:8080"
     environment:
       BACKEND:           http://mutillidae:80
-      PORT:              "80"
+      PORT:              "8080"
       PARANOIA:          "1"
       ANOMALY_INBOUND:   "5"
       ANOMALY_OUTBOUND:  "4"

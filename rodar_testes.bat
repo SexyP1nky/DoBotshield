@@ -153,23 +153,18 @@ echo [3/6] Configurando DVWA...
 
 set "DVWA_COOKIE_FILE=%COOKIES_DIR%\dvwa.txt"
 
-:: Login
+:: Passo 1: Obter pagina de login para extrair token CSRF
+:: (DVWA v1.10 exige user_token em todos os formularios)
 curl -s -c "!DVWA_COOKIE_FILE!" ^
-     -d "username=admin&password=password&Login=Login" ^
-     -L -o nul ^
+     -o "%TEMP%\dvwa_login_page.html" ^
      "http://localhost:%P_DVWA_NOWAF%/login.php"
 
-:: Inicializar banco de dados
+for /f "usebackq delims=" %%t in (`powershell -NoProfile -Command ^
+    "try { (Select-String -Path '%TEMP%\dvwa_login_page.html' -Pattern 'user_token').Line -replace '.*value=.([^'']+).*','\$1' } catch { '' }"`) do set "DVWA_CSRF=%%t"
+
+:: Passo 2: Login com usuario, senha e token CSRF
 curl -s -b "!DVWA_COOKIE_FILE!" -c "!DVWA_COOKIE_FILE!" ^
-     -d "create_db=Create+/+Reset+Database" ^
-     -L -o nul ^
-     "http://localhost:%P_DVWA_NOWAF%/setup.php"
-
-timeout /t 5 /nobreak >nul
-
-:: Login novamente apos reset do banco
-curl -s -c "!DVWA_COOKIE_FILE!" ^
-     -d "username=admin&password=password&Login=Login" ^
+     -d "username=admin&password=password&Login=Login&user_token=!DVWA_CSRF!" ^
      -L -o nul ^
      "http://localhost:%P_DVWA_NOWAF%/login.php"
 
