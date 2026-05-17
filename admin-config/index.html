@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DoBot Shield | Configuracao administrativa</title>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">DoBot Shield</p>
+      <h1>Configuracao administrativa</h1>
+    </div>
+    <span class="status-pill" id="configStatus" role="status">Validando</span>
+  </header>
+
+  <main class="workspace">
+    <section class="alert alert-warning" id="setupAlert" aria-live="polite">
+      <strong id="alertTitle">Revise a configuracao</strong>
+      <span id="alertMessage">Preencha os campos obrigatorios antes de iniciar o proxy.</span>
+    </section>
+
+    <form class="config-form" id="configForm" novalidate>
+      <section class="form-section" aria-labelledby="backendTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Backend</p>
+          <h2 id="backendTitle">Aplicacao protegida</h2>
+        </div>
+
+        <label class="field" for="targetUrl">
+          <span>URL de destino</span>
+          <input id="targetUrl" name="targetUrl" type="url" inputmode="url" autocomplete="url" placeholder="http://192.168.1.10:80" required>
+          <small class="field-error" data-error-for="targetUrl"></small>
+        </label>
+      </section>
+
+      <section class="form-section" aria-labelledby="proxyTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Proxy</p>
+          <h2 id="proxyTitle">Entrada publica</h2>
+        </div>
+
+        <div class="field-grid">
+          <label class="field" for="proxyPort">
+            <span>Endereco de escuta</span>
+            <input id="proxyPort" name="proxyPort" type="text" placeholder=":443" required>
+            <small class="field-error" data-error-for="proxyPort"></small>
+          </label>
+
+          <label class="field" for="trustedProxies">
+            <span>Proxies confiaveis</span>
+            <input id="trustedProxies" name="trustedProxies" type="text" placeholder="127.0.0.1,::1,10.0.0.0/8" required>
+            <small class="field-error" data-error-for="trustedProxies"></small>
+          </label>
+        </div>
+      </section>
+
+      <section class="form-section" aria-labelledby="limitsTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Protecao</p>
+          <h2 id="limitsTitle">Limites por IP</h2>
+        </div>
+
+        <div class="toggle-grid">
+          <label class="toggle-field" for="enableWaf">
+            <input id="enableWaf" name="enableWaf" type="checkbox">
+            <span>WAF ativo</span>
+          </label>
+
+          <label class="toggle-field" for="enableResponseInspection">
+            <input id="enableResponseInspection" name="enableResponseInspection" type="checkbox">
+            <span>Inspecao de resposta</span>
+          </label>
+
+          <label class="toggle-field" for="enableRateLimit">
+            <input id="enableRateLimit" name="enableRateLimit" type="checkbox">
+            <span>Rate limit ativo</span>
+          </label>
+        </div>
+
+        <div class="field-grid">
+          <label class="field" for="wafMode">
+            <span>Modo WAF</span>
+            <select id="wafMode" name="wafMode" required>
+              <option value="block">Bloquear</option>
+              <option value="monitor">Somente observar</option>
+              <option value="off">Desligado</option>
+            </select>
+            <small class="field-error" data-error-for="wafMode"></small>
+          </label>
+
+          <label class="field" for="wafAllowlist">
+            <span>Allowlist WAF</span>
+            <input id="wafAllowlist" name="wafAllowlist" type="text" placeholder="SQLi:/api/search,XSS:/content-editor">
+            <small class="field-error" data-error-for="wafAllowlist"></small>
+          </label>
+        </div>
+
+        <div class="field-grid three-columns">
+          <label class="field" for="rateLimit">
+            <span>Requisicoes por segundo</span>
+            <input id="rateLimit" name="rateLimit" type="number" min="0.1" step="0.1" required>
+            <small class="field-error" data-error-for="rateLimit"></small>
+          </label>
+
+          <label class="field" for="burstLimit">
+            <span>Pico permitido</span>
+            <input id="burstLimit" name="burstLimit" type="number" min="1" step="1" required>
+            <small class="field-error" data-error-for="burstLimit"></small>
+          </label>
+
+          <label class="field" for="maxConns">
+            <span>Conexoes simultaneas</span>
+            <input id="maxConns" name="maxConns" type="number" min="1" step="1" required>
+            <small class="field-error" data-error-for="maxConns"></small>
+          </label>
+
+          <label class="field" for="maxTrackedIps">
+            <span>IPs rastreados</span>
+            <input id="maxTrackedIps" name="maxTrackedIps" type="number" min="1" step="1" required>
+            <small class="field-error" data-error-for="maxTrackedIps"></small>
+          </label>
+
+          <label class="field" for="maxBodySize">
+            <span>Body maximo em bytes</span>
+            <input id="maxBodySize" name="maxBodySize" type="number" min="1024" step="1024" required>
+            <small class="field-error" data-error-for="maxBodySize"></small>
+          </label>
+
+          <label class="field" for="responseInspectionLimit">
+            <span>Resposta maxima inspecionada</span>
+            <input id="responseInspectionLimit" name="responseInspectionLimit" type="number" min="1024" step="1024" required>
+            <small class="field-error" data-error-for="responseInspectionLimit"></small>
+          </label>
+
+          <label class="field" for="rateLimitStateFile">
+            <span>Arquivo de estado</span>
+            <input id="rateLimitStateFile" name="rateLimitStateFile" type="text" placeholder="state/ratelimit.json">
+            <small class="field-error" data-error-for="rateLimitStateFile"></small>
+          </label>
+        </div>
+      </section>
+
+      <section class="form-section" aria-labelledby="blocklistTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Blocklist</p>
+          <h2 id="blocklistTitle">IPs bloqueados</h2>
+        </div>
+
+        <label class="field" for="blockedIps">
+          <span>Lista de bloqueio</span>
+          <input id="blockedIps" name="blockedIps" type="text" placeholder="192.168.1.100,10.0.0.0/8">
+          <small>IPs ou CIDRs separados por virgula. Essas origens sao bloqueadas antes do WAF e do rate limiter, com resposta 403.</small>
+        </label>
+      </section>
+
+      <section class="form-section" aria-labelledby="tlsTitle">
+        <div class="section-heading">
+          <p class="eyebrow">TLS</p>
+          <h2 id="tlsTitle">Certificado do shield</h2>
+        </div>
+
+        <div class="field-grid">
+          <label class="field" for="certFile">
+            <span>Arquivo do certificado</span>
+            <input id="certFile" name="certFile" type="text" placeholder="server.crt" required>
+            <small class="field-error" data-error-for="certFile"></small>
+          </label>
+
+          <label class="field" for="keyFile">
+            <span>Arquivo da chave privada</span>
+            <input id="keyFile" name="keyFile" type="text" placeholder="server.key" required>
+            <small class="field-error" data-error-for="keyFile"></small>
+          </label>
+        </div>
+
+        <div class="toggle-grid">
+          <label class="toggle-field" for="insecureSkipVerify">
+            <input id="insecureSkipVerify" name="insecureSkipVerify" type="checkbox">
+            <span>Aceitar TLS autoassinado no backend</span>
+          </label>
+        </div>
+      </section>
+
+      <div class="form-actions">
+        <button class="button secondary" type="button" data-action="reset">Restaurar padrao</button>
+        <button class="button primary" type="submit">Validar configuracao</button>
+      </div>
+    </form>
+
+    <aside class="output-panel" aria-labelledby="outputTitle">
+      <div class="section-heading compact">
+        <p class="eyebrow">Saida</p>
+        <h2 id="outputTitle">Comando gerado</h2>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Formato do comando">
+        <button class="tab active" type="button" role="tab" aria-selected="true" data-command-tab="powershell">PowerShell</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-command-tab="bash">Bash</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-command-tab="dotenv">.env</button>
+      </div>
+
+      <textarea id="commandOutput" class="command-output" spellcheck="false" readonly></textarea>
+
+      <div class="form-actions output-actions">
+        <button class="button secondary" type="button" data-action="copy">Copiar</button>
+        <button class="button secondary" type="button" data-action="download">Baixar .env</button>
+      </div>
+
+      <p class="copy-status" id="copyStatus" aria-live="polite"></p>
+    </aside>
+  </main>
+
+  <script src="scripts/config-schema.js"></script>
+  <script src="scripts/validators.js"></script>
+  <script src="scripts/formatters.js"></script>
+  <script src="scripts/storage.js"></script>
+  <script src="scripts/dom.js"></script>
+  <script src="scripts/clipboard.js"></script>
+  <script src="scripts/download.js"></script>
+  <script src="scripts/render.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>

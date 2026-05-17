@@ -1,0 +1,170 @@
+name: dobotshield-lab
+
+# Mapa de portas do laboratorio:
+#   8080  -> DVWA sem WAF          (referencia, acesso direto)
+#   8081  -> Mutillidae sem WAF    (referencia, acesso direto)
+#   9080  -> DoBotShield -> DVWA
+#   9081  -> DoBotShield -> Mutillidae
+#   9180  -> ModSecurity -> DVWA
+#   9181  -> ModSecurity -> Mutillidae
+#   9280  -> Coraza -> DVWA
+#   9281  -> Coraza -> Mutillidae
+
+networks:
+  waf_lab:
+    driver: bridge
+
+services:
+
+  # ============================================================
+  # APLICACOES VULNERAVEIS
+  # ============================================================
+
+  dvwa:
+    image: vulnerables/web-dvwa
+    container_name: lab_dvwa
+    networks:
+      - waf_lab
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+  mutillidae_db:
+    image: webpwnized/mutillidae:database
+    container_name: lab_mutillidae_db
+    networks:
+      - waf_lab
+    restart: unless-stopped
+
+  mutillidae:
+    image: webpwnized/mutillidae:www
+    container_name: lab_mutillidae
+    networks:
+      - waf_lab
+    ports:
+      - "8081:80"
+    depends_on:
+      - mutillidae_db
+    restart: unless-stopped
+
+  # ============================================================
+  # DOBOTSHIELD (HTTP_MODE=true para laboratorio)
+  # ============================================================
+
+  dobotshield_dvwa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lab_dobotshield_dvwa
+    networks:
+      - waf_lab
+    ports:
+      - "9080:80"
+    environment:
+      TARGET_URL:               http://dvwa:80
+      PROXY_PORT:               ":80"
+      HTTP_MODE:                "true"
+      ENABLE_WAF:               "true"
+      WAF_MODE:                 "block"
+      ENABLE_RESPONSE_INSPECTION: "true"
+      ENABLE_RATE_LIMIT:        "false"
+      INSECURE_SKIP_VERIFY:     "false"
+    depends_on:
+      - dvwa
+    restart: unless-stopped
+
+  dobotshield_mutillidae:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lab_dobotshield_mutillidae
+    networks:
+      - waf_lab
+    ports:
+      - "9081:80"
+    environment:
+      TARGET_URL:               http://mutillidae:80
+      PROXY_PORT:               ":80"
+      HTTP_MODE:                "true"
+      ENABLE_WAF:               "true"
+      WAF_MODE:                 "block"
+      ENABLE_RESPONSE_INSPECTION: "true"
+      ENABLE_RATE_LIMIT:        "false"
+      INSECURE_SKIP_VERIFY:     "false"
+    depends_on:
+      - mutillidae
+    restart: unless-stopped
+
+  # ============================================================
+  # MODSECURITY + OWASP CRS (paranoia level 1)
+  # ============================================================
+
+  modsecurity_dvwa:
+    image: owasp/modsecurity-crs:nginx
+    container_name: lab_modsecurity_dvwa
+    networks:
+      - waf_lab
+    ports:
+      - "9180:80"
+    environment:
+      BACKEND:           http://dvwa:80
+      PORT:              "80"
+      PARANOIA:          "1"
+      ANOMALY_INBOUND:   "5"
+      ANOMALY_OUTBOUND:  "4"
+    depends_on:
+      - dvwa
+    restart: unless-stopped
+
+  modsecurity_mutillidae:
+    image: owasp/modsecurity-crs:nginx
+    container_name: lab_modsecurity_mutillidae
+    networks:
+      - waf_lab
+    ports:
+      - "9181:80"
+    environment:
+      BACKEND:           http://mutillidae:80
+      PORT:              "80"
+      PARANOIA:          "1"
+      ANOMALY_INBOUND:   "5"
+      ANOMALY_OUTBOUND:  "4"
+    depends_on:
+      - mutillidae
+    restart: unless-stopped
+
+  # ============================================================
+  # CORAZA + CADDY + OWASP CRS
+  # Terceiro WAF de comparacao: implementacao Go do motor WAF,
+  # mais recente que o ModSecurity, usando as mesmas regras CRS.
+  # ============================================================
+
+  coraza_dvwa:
+    build:
+      context: docker/coraza
+      dockerfile: Dockerfile
+    container_name: lab_coraza_dvwa
+    networks:
+      - waf_lab
+    ports:
+      - "9280:80"
+    environment:
+      BACKEND: http://dvwa:80
+    depends_on:
+      - dvwa
+    restart: unless-stopped
+
+  coraza_mutillidae:
+    build:
+      context: docker/coraza
+      dockerfile: Dockerfile
+    container_name: lab_coraza_mutillidae
+    networks:
+      - waf_lab
+    ports:
+      - "9281:80"
+    environment:
+      BACKEND: http://mutillidae:80
+    depends_on:
+      - mutillidae
+    restart: unless-stopped

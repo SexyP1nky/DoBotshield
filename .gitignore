@@ -1,0 +1,35 @@
+# Binarios compilados
+dobotshield
+dobotshield.exe
+build/
+dist/
+
+# Material TLS — gerar localmente com certificado/gerar_cert.go
+*.crt
+*.key
+*.pem
+
+# Ambiente local
+.env
+*.env
+
+# Cache e estado em tempo de execucao
+.gocache/
+state/
+ratelimit.json
+
+# Ferramentas de seguranca baixadas localmente
+ferramentas/sqlmap/
+ferramentas/XSStrike/
+ferramentas/nuclei/
+
+# Logs de testes
+logs/sqlmap/
+logs/xsstrike/
+logs/nuclei/
+logs/cookies/
+
+# Cookies de sessao do laboratorio
+*.txt.bak
+dvwa_cookies.txt
+mutillidae_cookies.txt
