@@ -21,11 +21,17 @@ ratelimit.json
 # Ferramentas de seguranca baixadas localmente
 ferramentas/sqlmap/
 ferramentas/XSStrike/
+ferramentas/commix/
+ferramentas/testssl/
 ferramentas/nuclei/
 
-# Logs de testes
+# Logs de testes (56 arquivos gerados por rodar_testes.bat)
+logs/testssl/
+logs/zap/
 logs/sqlmap/
 logs/xsstrike/
+logs/commix/
+logs/wrk/
 logs/nuclei/
 logs/cookies/
 
