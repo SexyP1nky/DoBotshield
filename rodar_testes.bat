@@ -195,51 +195,38 @@ echo   Mutillidae Coraza...
 docker run --rm drwetter/testssl.sh !TESTSSL_OPTS! host.docker.internal:!P_MUTT_CORAZA! >> "!L!" 2>&1
 
 :: ==================================================================
-:: OWASP ZAP
+:: OWASP ZAP (relatorios HTML em logs\zap\)
 :: ==================================================================
 echo.
-echo [5] OWASP ZAP - Baseline Scan
+echo [5] OWASP ZAP - Baseline Scan (HTML reports)
 echo ------------------------------------------------------------------
 
-set "L=!LOG_DIR!\zap\zap_dvwa_semwaf.txt"
+set "ZAP_VOL=!LOG_DIR!\zap"
+set "ZAP_CMD=docker run --rm -v "!ZAP_VOL!:/zap/wrk/:rw" ghcr.io/zaproxy/zaproxy:stable zap-baseline.py"
+
 echo   DVWA sem WAF...
-( echo [ZAP] DVWA sem WAF - http://host.docker.internal:!P_DVWA_NOWAF!/ - !date! !time! ) > "!L!"
-docker run --rm ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t "http://host.docker.internal:!P_DVWA_NOWAF!/" !ZAP_OPTS! >> "!L!" 2>&1
+!ZAP_CMD! -t "http://host.docker.internal:!P_DVWA_NOWAF!/" !ZAP_OPTS! -r zap_dvwa_semwaf.html >nul 2>&1
 
-set "L=!LOG_DIR!\zap\zap_dvwa_dobotshield.txt"
 echo   DVWA DoBotShield...
-( echo [ZAP] DVWA DoBotShield - http://host.docker.internal:!P_DVWA_DOBOT!/ - !date! !time! ) > "!L!"
-docker run --rm ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t "http://host.docker.internal:!P_DVWA_DOBOT!/" !ZAP_OPTS! >> "!L!" 2>&1
+!ZAP_CMD! -t "http://host.docker.internal:!P_DVWA_DOBOT!/" !ZAP_OPTS! -r zap_dvwa_dobotshield.html >nul 2>&1
 
-set "L=!LOG_DIR!\zap\zap_dvwa_modsecurity.txt"
 echo   DVWA ModSecurity...
-( echo [ZAP] DVWA ModSecurity - http://host.docker.internal:!P_DVWA_MODSEC!/ - !date! !time! ) > "!L!"
-docker run --rm ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t "http://host.docker.internal:!P_DVWA_MODSEC!/" !ZAP_OPTS! >> "!L!" 2>&1
+!ZAP_CMD! -t "http://host.docker.internal:!P_DVWA_MODSEC!/" !ZAP_OPTS! -r zap_dvwa_modsecurity.html >nul 2>&1
 
-set "L=!LOG_DIR!\zap\zap_dvwa_coraza.txt"
 echo   DVWA Coraza...
-( echo [ZAP] DVWA Coraza - http://host.docker.internal:!P_DVWA_CORAZA!/ - !date! !time! ) > "!L!"
-docker run --rm ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t "http://host.docker.internal:!P_DVWA_CORAZA!/" !ZAP_OPTS! >> "!L!" 2>&1
+!ZAP_CMD! -t "http://host.docker.internal:!P_DVWA_CORAZA!/" !ZAP_OPTS! -r zap_dvwa_coraza.html >nul 2>&1
 
-set "L=!LOG_DIR!\zap\zap_mutillidae_semwaf.txt"
 echo   Mutillidae sem WAF...
-( echo [ZAP] Mutillidae sem WAF - http://host.docker.internal:!P_MUTT_NOWAF!/ - !date! !time! ) > "!L!"
-docker run --rm ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t "http://host.docker.internal:!P_MUTT_NOWAF!/" !ZAP_OPTS! >> "!L!" 2>&1
+!ZAP_CMD! -t "http://host.docker.internal:!P_MUTT_NOWAF!/" !ZAP_OPTS! -r zap_mutillidae_semwaf.html >nul 2>&1
 
-set "L=!LOG_DIR!\zap\zap_mutillidae_dobotshield.txt"
 echo   Mutillidae DoBotShield...
-( echo [ZAP] Mutillidae DoBotShield - http://host.docker.internal:!P_MUTT_DOBOT!/ - !date! !time! ) > "!L!"
-docker run --rm ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t "http://host.docker.internal:!P_MUTT_DOBOT!/" !ZAP_OPTS! >> "!L!" 2>&1
+!ZAP_CMD! -t "http://host.docker.internal:!P_MUTT_DOBOT!/" !ZAP_OPTS! -r zap_mutillidae_dobotshield.html >nul 2>&1
 
-set "L=!LOG_DIR!\zap\zap_mutillidae_modsecurity.txt"
 echo   Mutillidae ModSecurity...
-( echo [ZAP] Mutillidae ModSecurity - http://host.docker.internal:!P_MUTT_MODSEC!/ - !date! !time! ) > "!L!"
-docker run --rm ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t "http://host.docker.internal:!P_MUTT_MODSEC!/" !ZAP_OPTS! >> "!L!" 2>&1
+!ZAP_CMD! -t "http://host.docker.internal:!P_MUTT_MODSEC!/" !ZAP_OPTS! -r zap_mutillidae_modsecurity.html >nul 2>&1
 
-set "L=!LOG_DIR!\zap\zap_mutillidae_coraza.txt"
 echo   Mutillidae Coraza...
-( echo [ZAP] Mutillidae Coraza - http://host.docker.internal:!P_MUTT_CORAZA!/ - !date! !time! ) > "!L!"
-docker run --rm ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t "http://host.docker.internal:!P_MUTT_CORAZA!/" !ZAP_OPTS! >> "!L!" 2>&1
+!ZAP_CMD! -t "http://host.docker.internal:!P_MUTT_CORAZA!/" !ZAP_OPTS! -r zap_mutillidae_coraza.html >nul 2>&1
 
 :: ==================================================================
 :: SQLMAP
