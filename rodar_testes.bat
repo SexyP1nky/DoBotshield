@@ -302,56 +302,56 @@ echo ------------------------------------------------------------------
 echo   [testssl] DVWA sem WAF (porta !P_DVWA_NOWAF!)...
 set "LOG_FILE=!LOG_DIR!\testssl\testssl_dvwa_semwaf.txt"
 call :log_header "!LOG_FILE!" "TESTSSL - DVWA sem WAF" "host.docker.internal:!P_DVWA_NOWAF!"
-docker run --rm drwetter/testssl.sh --quiet --color 0 host.docker.internal:!P_DVWA_NOWAF! >> "!LOG_FILE!" 2>&1
+docker run --rm drwetter/testssl.sh --quiet --warnings batch --color 0 host.docker.internal:!P_DVWA_NOWAF! >> "!LOG_FILE!" 2>&1
 echo       OK.
 
 :: DVWA - DoBotShield
 echo   [testssl] DVWA com DoBotShield (porta !P_DVWA_DOBOT!)...
 set "LOG_FILE=!LOG_DIR!\testssl\testssl_dvwa_dobotshield.txt"
 call :log_header "!LOG_FILE!" "TESTSSL - DVWA com DoBotShield" "host.docker.internal:!P_DVWA_DOBOT!"
-docker run --rm drwetter/testssl.sh --quiet --color 0 host.docker.internal:!P_DVWA_DOBOT! >> "!LOG_FILE!" 2>&1
+docker run --rm drwetter/testssl.sh --quiet --warnings batch --color 0 host.docker.internal:!P_DVWA_DOBOT! >> "!LOG_FILE!" 2>&1
 echo       OK.
 
 :: DVWA - ModSecurity
 echo   [testssl] DVWA com ModSecurity (porta !P_DVWA_MODSEC!)...
 set "LOG_FILE=!LOG_DIR!\testssl\testssl_dvwa_modsecurity.txt"
 call :log_header "!LOG_FILE!" "TESTSSL - DVWA com ModSecurity" "host.docker.internal:!P_DVWA_MODSEC!"
-docker run --rm drwetter/testssl.sh --quiet --color 0 host.docker.internal:!P_DVWA_MODSEC! >> "!LOG_FILE!" 2>&1
+docker run --rm drwetter/testssl.sh --quiet --warnings batch --color 0 host.docker.internal:!P_DVWA_MODSEC! >> "!LOG_FILE!" 2>&1
 echo       OK.
 
 :: DVWA - Coraza
 echo   [testssl] DVWA com Coraza (porta !P_DVWA_CORAZA!)...
 set "LOG_FILE=!LOG_DIR!\testssl\testssl_dvwa_coraza.txt"
 call :log_header "!LOG_FILE!" "TESTSSL - DVWA com Coraza" "host.docker.internal:!P_DVWA_CORAZA!"
-docker run --rm drwetter/testssl.sh --quiet --color 0 host.docker.internal:!P_DVWA_CORAZA! >> "!LOG_FILE!" 2>&1
+docker run --rm drwetter/testssl.sh --quiet --warnings batch --color 0 host.docker.internal:!P_DVWA_CORAZA! >> "!LOG_FILE!" 2>&1
 echo       OK.
 
 :: Mutillidae - sem WAF
 echo   [testssl] Mutillidae sem WAF (porta !P_MUTT_NOWAF!)...
 set "LOG_FILE=!LOG_DIR!\testssl\testssl_mutillidae_semwaf.txt"
 call :log_header "!LOG_FILE!" "TESTSSL - Mutillidae sem WAF" "host.docker.internal:!P_MUTT_NOWAF!"
-docker run --rm drwetter/testssl.sh --quiet --color 0 host.docker.internal:!P_MUTT_NOWAF! >> "!LOG_FILE!" 2>&1
+docker run --rm drwetter/testssl.sh --quiet --warnings batch --color 0 host.docker.internal:!P_MUTT_NOWAF! >> "!LOG_FILE!" 2>&1
 echo       OK.
 
 :: Mutillidae - DoBotShield
 echo   [testssl] Mutillidae com DoBotShield (porta !P_MUTT_DOBOT!)...
 set "LOG_FILE=!LOG_DIR!\testssl\testssl_mutillidae_dobotshield.txt"
 call :log_header "!LOG_FILE!" "TESTSSL - Mutillidae com DoBotShield" "host.docker.internal:!P_MUTT_DOBOT!"
-docker run --rm drwetter/testssl.sh --quiet --color 0 host.docker.internal:!P_MUTT_DOBOT! >> "!LOG_FILE!" 2>&1
+docker run --rm drwetter/testssl.sh --quiet --warnings batch --color 0 host.docker.internal:!P_MUTT_DOBOT! >> "!LOG_FILE!" 2>&1
 echo       OK.
 
 :: Mutillidae - ModSecurity
 echo   [testssl] Mutillidae com ModSecurity (porta !P_MUTT_MODSEC!)...
 set "LOG_FILE=!LOG_DIR!\testssl\testssl_mutillidae_modsecurity.txt"
 call :log_header "!LOG_FILE!" "TESTSSL - Mutillidae com ModSecurity" "host.docker.internal:!P_MUTT_MODSEC!"
-docker run --rm drwetter/testssl.sh --quiet --color 0 host.docker.internal:!P_MUTT_MODSEC! >> "!LOG_FILE!" 2>&1
+docker run --rm drwetter/testssl.sh --quiet --warnings batch --color 0 host.docker.internal:!P_MUTT_MODSEC! >> "!LOG_FILE!" 2>&1
 echo       OK.
 
 :: Mutillidae - Coraza
 echo   [testssl] Mutillidae com Coraza (porta !P_MUTT_CORAZA!)...
 set "LOG_FILE=!LOG_DIR!\testssl\testssl_mutillidae_coraza.txt"
 call :log_header "!LOG_FILE!" "TESTSSL - Mutillidae com Coraza" "host.docker.internal:!P_MUTT_CORAZA!"
-docker run --rm drwetter/testssl.sh --quiet --color 0 host.docker.internal:!P_MUTT_CORAZA! >> "!LOG_FILE!" 2>&1
+docker run --rm drwetter/testssl.sh --quiet --warnings batch --color 0 host.docker.internal:!P_MUTT_CORAZA! >> "!LOG_FILE!" 2>&1
 echo       OK.
 
 :: ================================================================
@@ -726,7 +726,7 @@ echo   Nomenclatura: [ferramenta]_[app]_[waf].txt
 echo   Exemplo: sqlmap_dvwa_dobotshield.txt
 echo.
 echo   PARAMETROS USADOS (identicos para todos os alvos):
-echo     testssl  : --quiet --color 0
+echo     testssl  : --quiet --warnings batch --color 0
 echo     ZAP      : baseline scan, max 2 min, sem falha por alertas
 echo     sqlmap   : --level=1 --risk=1 --delay=1 --batch
 echo     XSStrike : --skip-dom --timeout 10

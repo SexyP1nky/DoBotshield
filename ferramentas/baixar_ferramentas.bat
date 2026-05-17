@@ -171,25 +171,8 @@ if exist "%NUCLEI_DIR%\nuclei.exe" (
     echo       ja existe. Atualizando templates...
     "%NUCLEI_DIR%\nuclei.exe" -update-templates -silent 2>nul
 ) else (
-    echo       Baixando binario Windows (via PowerShell)...
-    if not exist "%NUCLEI_DIR%" mkdir "%NUCLEI_DIR%"
-
-    powershell -NoProfile -ExecutionPolicy Bypass -Command ^
-        "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; " ^
-        "try { " ^
-        "  $rel = Invoke-RestMethod -Uri 'https://api.github.com/repos/projectdiscovery/nuclei/releases/latest' -UseBasicParsing; " ^
-        "  $asset = $rel.assets | Where-Object { $_.name -match 'windows.*amd64.*zip$' } | Select-Object -First 1; " ^
-        "  if (-not $asset) { throw 'Asset nao encontrado' }; " ^
-        "  Write-Host ('       Versao: ' + $rel.tag_name); " ^
-        "  Write-Host ('       Arquivo: ' + $asset.name); " ^
-        "  $out = '%NUCLEI_DIR%\nuclei.zip'; " ^
-        "  Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $out -UseBasicParsing; " ^
-        "  Expand-Archive -Path $out -DestinationPath '%NUCLEI_DIR%' -Force; " ^
-        "  Remove-Item $out -Force; " ^
-        "  Write-Host '       Download concluido.' " ^
-        "} catch { " ^
-        "  Write-Error $_.Exception.Message; exit 1 " ^
-        "}"
+    echo       Baixando binario Windows...
+    powershell -NoProfile -ExecutionPolicy Bypass -File "%TOOLS_DIR%\baixar_nuclei.ps1" -NucleiDir "%NUCLEI_DIR%"
 
     if not exist "%NUCLEI_DIR%\nuclei.exe" (
         echo [ERRO] nuclei.exe nao encontrado apos download.
