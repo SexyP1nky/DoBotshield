@@ -1,6 +1,6 @@
 # DoBot Shield
 
-Proxy reverso de seguranca com WAF integrado, desenvolvido como Trabalho de Conclusao de Curso em Ciencia da Computacao. Atua na frente de aplicacoes web legadas sem exigir modificacao no codigo da aplicacao protegida.
+Proxy reverso de seguranca com WAF integrado, desenvolvido como Trabalho de Conclusao de Curso em Ciencia da Computacao. Atua na frente de aplicacoes web legadas sem exigir modificacao no codigo da aplicacao protegida..
 
 ---
 
