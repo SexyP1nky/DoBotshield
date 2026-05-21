@@ -433,15 +433,4 @@ WAF_ALLOWLIST=SQLi:/api/search,XSS:/editor,/health
 
 ---
 
-## Checklist de implantacao
 
-- [ ] Gerar ou importar certificado TLS de CA confiavel
-- [ ] Garantir que `server.crt` e `server.key` nao estao versionados
-- [ ] Definir `TARGET_URL` com a URL interna da aplicacao
-- [ ] Configurar `TRUSTED_PROXIES` apenas com proxies reais
-- [ ] Iniciar com `WAF_MODE=monitor` e revisar logs
-- [ ] Criar allowlists minimas para falsos positivos identificados
-- [ ] Ativar `WAF_MODE=block`
-- [ ] Executar `go test ./...`
-- [ ] Rodar suite de comparacao em ambiente de laboratorio
-#
