@@ -443,3 +443,5 @@ WAF_ALLOWLIST=SQLi:/api/search,XSS:/editor,/health
 - [ ] Ativar `WAF_MODE=block`
 - [ ] Executar `go test ./...`
 - [ ] Rodar suite de comparacao em ambiente de laboratorio
+#   D o b o t s h i e l d v 2  
+ 
