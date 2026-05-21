@@ -224,6 +224,7 @@
         return validateBoolean(valueToCheck, "TLS inseguro do backend");
       },
       wafAllowlist: validateOptionalCsv,
+      blockedIps: validateOptionalCsv,
       rateLimitStateFile: validateOptionalPath
     };
 

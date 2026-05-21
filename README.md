@@ -318,12 +318,12 @@ O `docker-compose.yml` sobe oito endpoints para comparacao:
 |---|---|
 | 8080 | DVWA sem WAF (referencia) |
 | 8081 | Mutillidae sem WAF (referencia) |
-| 9080 | DoBotShield protegendo DVWA |
-| 9081 | DoBotShield protegendo Mutillidae |
-| 9180 | ModSecurity + OWASP CRS protegendo DVWA |
-| 9181 | ModSecurity + OWASP CRS protegendo Mutillidae |
-| 9280 | Coraza + OWASP CRS protegendo DVWA |
-| 9281 | Coraza + OWASP CRS protegendo Mutillidae |
+| 9080 | DoBotShield protegendo DVWA (HTTPS) |
+| 9081 | DoBotShield protegendo Mutillidae (HTTPS) |
+| 9180 | ModSecurity + OWASP CRS protegendo DVWA (HTTPS) |
+| 9181 | ModSecurity + OWASP CRS protegendo Mutillidae (HTTPS) |
+| 9280 | Coraza + OWASP CRS protegendo DVWA (HTTPS) |
+| 9281 | Coraza + OWASP CRS protegendo Mutillidae (HTTPS) |
 
 **Coraza** e um motor WAF escrito em Go, compativel com as regras OWASP CRS, mais recente e menos consolidado que o ModSecurity — escolhido como terceiro ponto de comparacao academica.
 

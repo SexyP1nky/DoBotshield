@@ -106,9 +106,19 @@ func printBanner(cfg config.Config, httpMode bool) {
 	if httpMode {
 		proto = "HTTP (lab)"
 	}
-	fmt.Println("==================================================")
+	listenAddr := cfg.ProxyPort
+	if len(listenAddr) > 0 && listenAddr[0] == ':' {
+		listenAddr = "localhost" + listenAddr
+	}
+	scheme := "https"
+	if httpMode {
+		scheme = "http"
+	}
+
+	fmt.Println("°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°")
 	fmt.Println("  DoBot Shield")
 	fmt.Printf("  Protocolo:        %s\n", proto)
+	fmt.Printf("  URL de acesso:    %s://%s\n", scheme, listenAddr)
 	fmt.Printf("  Proxy:            %s  ->  %s\n", cfg.ProxyPort, cfg.TargetURL)
 	fmt.Printf("  WAF:              %v (%s)\n", cfg.EnableSanitizer, cfg.WAFMode)
 	fmt.Printf("  Inspecao:         %v\n", cfg.EnableResponseInspection)
@@ -119,8 +129,10 @@ func printBanner(cfg config.Config, httpMode bool) {
 	if cfg.RateLimitStateFile != "" {
 		fmt.Printf("  Estado:           %s\n", cfg.RateLimitStateFile)
 	}
+	backendTLS := "verificado"
 	if cfg.InsecureSkipVerify {
-		fmt.Println("  AVISO: TLS do backend desabilitado")
+		backendTLS = "autoassinado aceito"
 	}
-	fmt.Println("==================================================")
+	fmt.Printf("  Backend TLS:       %s\n", backendTLS)
+	fmt.Println("°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°")
 }

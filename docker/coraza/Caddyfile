@@ -2,7 +2,9 @@
     order coraza_waf first
 }
 
-:80 {
+:443 {
+    tls /certs/server.crt /certs/server.key
+
     coraza_waf {
         load_owasp_crs
         directives `

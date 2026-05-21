@@ -5,14 +5,14 @@ import (
 	"strings"
 )
 
-// List holds IPs and CIDR networks that are permanently denied access.
+// Lista IPs e CIDR redes que são permanentes negadas.
 type List struct {
 	networks []*net.IPNet
 	addrs    map[string]struct{}
 }
 
-// New parses a slice of IPs and CIDR strings into a List.
-// Invalid entries are silently ignored.
+
+// Entradas inválidas são ignoradas.
 func New(entries []string) *List {
 	l := &List{addrs: make(map[string]struct{})}
 	for _, raw := range entries {
@@ -33,7 +33,7 @@ func New(entries []string) *List {
 	return l
 }
 
-// Contains reports whether ipStr matches any entry in the list.
+// contém uma verificação rápida para endereços IP exatos antes de verificar as redes CIDR, para melhorar o desempenho em casos comuns.
 func (l *List) Contains(ipStr string) bool {
 	if len(l.networks) == 0 && len(l.addrs) == 0 {
 		return false

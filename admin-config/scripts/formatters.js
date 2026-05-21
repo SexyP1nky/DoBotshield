@@ -40,11 +40,20 @@
     });
   }
 
+  function buildAccessUrl(proxyPort) {
+    var addr = String(proxyPort || ":443").trim();
+    if (addr.charAt(0) === ":") {
+      addr = "localhost" + addr;
+    }
+    return "https://" + addr;
+  }
+
   function buildPowerShell(config) {
     var lines = toEnvPairs(config).map(function mapPair(pair) {
       return "$env:" + pair.key + " = " + quotePowerShell(pair.value);
     });
 
+    lines.unshift("# Acesso: " + buildAccessUrl(config.proxyPort));
     lines.push(".\\dobotshield.exe");
     return lines.join("\n");
   }
@@ -54,14 +63,17 @@
       return "export " + pair.key + "=" + quoteBash(pair.value);
     });
 
+    lines.unshift("# Acesso: " + buildAccessUrl(config.proxyPort));
     lines.push("./dobotshield");
     return lines.join("\n");
   }
 
   function buildDotEnv(config) {
-    return toEnvPairs(config).map(function mapPair(pair) {
+    var header = "# Acesso: " + buildAccessUrl(config.proxyPort);
+    var body = toEnvPairs(config).map(function mapPair(pair) {
       return pair.key + "=" + quoteDotEnv(pair.value);
     }).join("\n");
+    return header + "\n" + body;
   }
 
   function buildCommand(config, mode) {

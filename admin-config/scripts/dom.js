@@ -38,8 +38,8 @@
     var input = getElement("#" + fieldId);
     var error = getElement('[data-error-for="' + fieldId + '"]');
 
-    input.classList.toggle("invalid", Boolean(message));
-    error.textContent = message || "";
+    if (input) { input.classList.toggle("invalid", Boolean(message)); }
+    if (error) { error.textContent = message || ""; }
   }
 
   function clearFieldErrors() {

@@ -153,6 +153,7 @@
         <label class="field" for="blockedIps">
           <span>Lista de bloqueio</span>
           <input id="blockedIps" name="blockedIps" type="text" placeholder="192.168.1.100,10.0.0.0/8">
+          <small class="field-error" data-error-for="blockedIps"></small>
           <small>IPs ou CIDRs separados por virgula. Essas origens sao bloqueadas antes do WAF e do rate limiter, com resposta 403.</small>
         </label>
       </section>
